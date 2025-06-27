@@ -192,7 +192,7 @@ int jbc_set_cred(const struct jbc_cred* newp)
     }
     uintptr_t td = jbc_krw_get_td();
     uintptr_t proc = jbc_krw_read64(td + 8, KERNEL_HEAP);
-    uintptr_t ucred = jbc_krw_read64(proc + 0x40, KERNEL_HEAP);
+    // uintptr_t ucred = jbc_krw_read64(proc + 0x40, KERNEL_HEAP); // unused
     uintptr_t fd = jbc_krw_read64(proc + 0x48, KERNEL_HEAP);
     uintptr_t ofiles = jbc_krw_read64(fd, KERNEL_HEAP);
     int fds[3] = {cdir_fd, rdir_fd, jdir_fd};
