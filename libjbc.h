@@ -31,6 +31,7 @@ uintptr_t jbc_get_rootvnode(void);
 int jbc_get_cred(jbc_cred *);
 int jbc_jailbreak_cred(jbc_cred *);
 int jbc_set_cred(const jbc_cred *);
+void open_dev_console(void (*do_dup)(int));
 
 // kernelrw.h
 uint64_t jbc_krw_kcall(uint64_t fn, ...);

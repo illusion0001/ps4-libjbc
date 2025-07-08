@@ -28,6 +28,7 @@ uintptr_t jbc_get_rootvnode(void);
 int jbc_get_cred(struct jbc_cred*);
 int jbc_jailbreak_cred(struct jbc_cred*);
 int jbc_set_cred(const struct jbc_cred*);
+void open_dev_console(void (*do_dup)(int));
 
 #ifdef __cplusplus
 }

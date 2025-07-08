@@ -118,6 +118,44 @@ int jbc_jailbreak_cred(struct jbc_cred* ans)
     return 0;
 }
 
+static int jbc_jailbreak_cred_device(struct jbc_cred* ans)
+{
+    const uintptr_t rootvnode = jbc_get_rootvnode();
+    if (!rootvnode)
+    {
+        return -1;
+    }
+    // for devices
+    ans->sceProcCap = 0xffffffffffffffff;
+    ans->uid = 0;
+    ans->rdir = rootvnode;
+    return 0;
+}
+
+void open_dev_console(void (*do_dup)(int))
+{
+    // user must provide handler
+    if (!do_dup)
+    {
+        return;
+    }
+    struct jbc_cred g_Cred;
+    struct jbc_cred g_RootCreds;
+    jbc_get_cred(&g_Cred);
+    g_RootCreds = g_Cred;
+    jbc_jailbreak_cred_device(&g_RootCreds);
+    jbc_set_cred(&g_RootCreds);
+    const int O_WRONLY_ = 2;
+    const int fd = open("/dev/console", O_WRONLY_);
+    if (fd > 0)
+    {
+        do_dup(fd);
+        close(fd);
+    }
+    // unjailbreak
+    jbc_set_cred(&g_Cred);
+}
+
 static int jbc_open_this(const struct jbc_cred* cred0, uintptr_t vnode)
 {
     if(!vnode)
